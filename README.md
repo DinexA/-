@@ -1,28 +1,45 @@
-import math
-d_i = None
-d_j = None
-d_arr = [ ]#Масив с вершинами
-ma_x = 6
-print('-----------------------------------------------------------------------')
-print('-----------------------------------------------------------------------')
-for n in range(5, ma_x+1):
-    for m in range(0, int(2**(((n)/2)-1))-1):
-        d_arr.append(m)
-    print(d_arr)
-    # Наглядно выводим значения
-    i = 1
-    while i <= len(d_arr):
-          if i < len(d_arr):
-              d_i = d_arr[i-1]
-              d_j = d_arr[i]
-          else:
-              d_i = d_arr[i-1]
-              d_j = d_arr[i-i]
-          print(d_i,'d_i', end='/')
-          print(d_j,'d_j', end=' ')
-          print('||', end=' ')
-          i += 1
-    print(" ")
-    print(" ")
-    d_arr.clear()
-input()
+import matplotlib.pyplot as plt #библиотека визуализации
+import networkx as nx #библиотека графов
+import os #библиотека работы системы, в частности создания файлов
+
+def koor_to_set(a, b, c):
+koor = str(a) + str(b) + str(c)
+return frozenset(koor)
+
+path_to_dir = 'graphs'
+
+if os.path.exists(path_to_dir) == False: #это проверка на наличие папки graphs, если есть то уже новую создавать не будет
+os.mkdir(path_to_dir)
+
+colors_of_edges = {1: 'red', 2: 'blue'} #небольшой словарь цветов
+num_of_edges = 5 #вводим в переменную кол-во вершин графа
+
+G = nx.complete_graph(num_of_edges) #далее создаем все перменные для будущего графа
+pos = nx.circular_layout(G)
+nx.draw_networkx(G, pos=pos, edge_color='red')
+
+num = 0 #переменная для создания новых пнгешек графов по нумерации graph1 ... graph + num
+
+for c in range(2):
+c += 1
+x, y, z = 0, 1, num_of_edges #вводим перменные для того чтобы с помощью цикла пробежать по всем возможым тройкам
+iterations = 0 #переменная счетчик для цикла
+koor_of_edges = []
+while iterations != 5*num_of_edges: #начало цикла пробега по всем вариантам
+while z != 0:
+z -= 1
+iterations += 1
+if koor_to_set(x, y, z) not in koor_of_edges:
+if z != x and z != y:
+# print(koor_to_set(x, y, z))
+num += 1
+# print(z)
+nx.draw_networkx(G, pos=pos, node_color='black', edge_color='black')
+nx.draw(G.subgraph([x, y, z]), pos=pos, node_color=colors_of_edges[c], edge_color=colors_of_edges[c])
+plt.savefig(path_to_dir + '/graph' + str(num))
+koor_of_edges.append(koor_to_set(x, y, z))
+x += 1
+y += 1
+if x == 4:
+y = 0
+z = num_of_edges
