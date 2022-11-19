@@ -31,9 +31,9 @@ z -= 1
 iterations += 1
 if koor_to_set(x, y, z) not in koor_of_edges:
 if z != x and z != y:
-# print(koor_to_set(x, y, z))
+### print(koor_to_set(x, y, z))
 num += 1
-# print(z)
+### print(z)
 nx.draw_networkx(G, pos=pos, node_color='black', edge_color='black')
 nx.draw(G.subgraph([x, y, z]), pos=pos, node_color=colors_of_edges[c], edge_color=colors_of_edges[c])
 plt.savefig(path_to_dir + '/graph' + str(num))
